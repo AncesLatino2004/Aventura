@@ -1,7 +1,6 @@
 package JocNau;
-
-
-
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Map {
     private Room[] rooms;
@@ -32,8 +31,15 @@ public class Map {
         rooms[7].setExits(4, 9, 6, 8);
         rooms[8].setExits(5, -1, 7, -1);
         rooms[9].setExits(7, -1, -1, -1);
+        
+        rooms[0].addItem(new Item("Traje", "Sirve para salir a arreglar los propulsores", null));
+        rooms[1].addItem(new Item("Tarjeta", "Sirve para abrir la taquilla", null));
+        rooms[2].addItem(new Item("Herramienta", "Arregla los propulsores", null));
+        rooms[3].addItem(new Item("Linterna", "Ilumina el taller", null));
+        rooms[6].addItem(new Item("Donut", "Para al Gonzalin", null));
     }
 
+    // Método para obtener una habitación específica por índice
     public Room getRoom(int index) {
         if (index >= 0 && index < rooms.length) {
             return rooms[index];
@@ -41,4 +47,10 @@ public class Map {
             return null;
         }
     }
+
+    // Método para devolver todas las habitaciones como una lista
+    public ArrayList<Room> getAllRooms() {
+        return new ArrayList<>(Arrays.asList(rooms)); // Convertir el array a ArrayList y devolverlo
+    }
+    
 }
