@@ -20,10 +20,11 @@ public class AdventureGame {
         m = new Map(); // Debes asegurarte de que el constructor de Map esté bien definido
         // Crear al jugador y ponerlo en la habitación inicial
         player = new Player("Hero", m.getRoom(8));
-        enemy = new Enemy("Gonzalin", m.getRoom(0));
+        Enemy enemy = new Enemy("Gonzalin", 6);
         hall = new iHall();
+        
         // Inicializar el escáner para entrada del usuario
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
     }
 
     // Método para iniciar el ciclo del juego
@@ -36,46 +37,44 @@ public class AdventureGame {
         while (true) {
             System.out.println("\nEstás en: " + player.getCurrentRoom().getName());
             System.out.println(player.getCurrentRoom().getDescription());
-            System.out.println("Que quiers hacer: IR, AGARRAR, DEJAR, USAR, ENCENDER, IHALL,SALIR");
-            
+            System.out.println("Que quieres hacer: IR, AGARRAR, DEJAR, USAR, ENCENDER, IHALL, SALIR");
 
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().toUpperCase();
             switch (input) {
-            case "IR":
-                System.out.println("¿Hacia dónde quieres ir? (up, down, left, right): ");
-                String direction = scanner.nextLine().toLowerCase();
-                player.move(direction, m); // Mueve al jugador en la dirección dada
-                break;
+                case "IR":
+                    System.out.println("¿Hacia dónde quieres ir? (up, down, left, right): ");
+                    String direction = scanner.nextLine().toLowerCase();
+                    player.movePlayer(direction, m); // Mueve al jugador en la dirección dada
+                    break;
 
-            case "AGARRAR":
-                System.out.println("Has intentado AGARRAR algo. Implementar lógica aquí.");
-                break;
+                case "AGARRAR":
+                    System.out.println("Has intentado AGARRAR algo. Implementar lógica aquí.");
+                    break;
 
-            case "DEJAR":
-                System.out.println("Has intentado DEJAR algo. Implementar lógica aquí.");
-                break;
+                case "DEJAR":
+                    System.out.println("Has intentado DEJAR algo. Implementar lógica aquí.");
+                    break;
 
-            case "USAR":
-                System.out.println("Has intentado USAR algo. Implementar lógica aquí.");
-                break;
+                case "USAR":
+                    System.out.println("Has intentado USAR algo. Implementar lógica aquí.");
+                    break;
 
-            case "ENCENDER":
-                System.out.println("Has intentado ENCENDER algo. Implementar lógica aquí.");
-                break;
+                case "ENCENDER":
+                    System.out.println("Has intentado ENCENDER algo. Implementar lógica aquí.");
+                    break;
 
-            case "IHALL":
-                System.out.println("cridas a l'IHALL.");
-                hall.askForObject();
-                break;
+                case "IHALL":
+                    hall.askForObject(player); // Pasar el jugador al NPC para que interactúe
+                    break;
 
-            case "SALIR":
-                restartGame(); // Llamamos al método para reiniciar o terminar el juego
-                break;
+                case "SALIR":
+                    restartGame(); // Llamamos al método para reiniciar o terminar el juego
+                    break;
 
-            default:
-                System.out.println("No s'ha entes la paraula introduida, introduiu una paraula valida.");
-                break;
-        }
+                default:
+                    System.out.println("No se ha entendido la palabra introducida, introduce una válida.");
+                    break;
+            }
         }
     }
 
