@@ -64,7 +64,7 @@ public class AdventureGame {
                     break;
 
                 case "IHALL":
-                    hall.askForObject(player); // Pasar el jugador al NPC para que interactúe
+                    hall.askForObject(player, m); // Pasar el jugador al NPC para que interactúe
                     break;
 
                 case "SALIR":
