@@ -25,14 +25,13 @@ public class Player {
         return currentRoom;
     }
 
-    // Método para mover al jugador basado en la dirección
+    // Método para mover al jugador
     public void movePlayer(String direction, Map map) {
-        int nextRoomIndex = currentRoom.getExit(direction); // Usar el método getExit() con la dirección
-        
+        int nextRoomIndex = currentRoom.getExit(direction);
         if (nextRoomIndex == -1) {
             System.out.println("No puedes moverte en esa dirección.");
         } else {
-            Room nextRoom = map.getRoom(nextRoomIndex); // Obtener la próxima habitación
+            Room nextRoom = map.getRoom(nextRoomIndex);
             if (nextRoom.getName().equals("Tallers") && !hasFlashlightOn) {
                 System.out.println("El taller está oscuro. Necesitas encender la linterna para entrar.");
             } else if (nextRoom.getName().equals("Exterior") && !hasSuit) {
@@ -43,6 +42,12 @@ public class Player {
                 System.out.println(currentRoom.getDescription());
             }
         }
+    }
+
+    // Nuevo método para agregar un objeto al inventario
+    public void addItem(Item item) {
+        inventory.add(item);
+        System.out.println("El objeto " + item.getName() + " ha sido añadido a tu inventario.");
     }
 
     public void pickUpItem(String itemName) {
@@ -77,7 +82,6 @@ public class Player {
             } else if (foundItem.getEffect().equals("turn_on_flashlight")) {
                 hasFlashlightOn = true;
             }
-            // Puedes agregar más efectos específicos aquí.
         } else {
             System.out.println("No tienes tal objeto en tu inventario.");
         }
@@ -94,7 +98,6 @@ public class Player {
         }
     }
 
-    // Este es el nuevo método que agregué
     public ArrayList<Item> getInventory() {
         return inventory;
     }

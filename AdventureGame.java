@@ -48,7 +48,34 @@ public class AdventureGame {
                     break;
 
                 case "AGARRAR":
-                    System.out.println("Has intentado AGARRAR algo. Implementar lógica aquí.");
+                    Room currentRoom = player.getCurrentRoom(); // Obtener la habitación actual del jugador
+                    if (currentRoom.getItems().isEmpty()) {
+                        System.out.println("No hay objetos en esta habitación para agarrar.");
+                    } else {
+                        System.out.println("Objetos disponibles en esta habitación:");
+                        // Mostrar los objetos disponibles en la habitación actual
+                        for (int i = 0; i < currentRoom.getItems().size(); i++) {
+                            System.out.println((i + 1) + ". " + currentRoom.getItems().get(i).getName());
+                        }
+
+                        System.out.println("¿Qué objeto quieres agarrar? (Ingresa el número correspondiente): ");
+                        int itemIndex = scanner.nextInt();
+                        scanner.nextLine(); // Consumir el salto de línea después de ingresar el número
+
+                        // Validar la entrada del jugador
+                        if (itemIndex > 0 && itemIndex <= currentRoom.getItems().size()) {
+                            // Obtener el objeto elegido
+                            Item itemToGrab = currentRoom.getItems().get(itemIndex - 1);
+                            // Agregar el objeto al inventario del jugador
+                            player.addItem(itemToGrab);
+                            // Eliminar el objeto de la habitación
+                            currentRoom.removeItem(itemToGrab);
+
+                            System.out.println("Has agarrado: " + itemToGrab.getName());
+                        } else {
+                            System.out.println("Número inválido, intenta de nuevo.");
+                        }
+                    }
                     break;
 
                 case "DEJAR":
