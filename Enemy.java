@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class Enemy {
     private String name;
-    private int currentRoom; // La habitación actual en la que está el enemigo
+    private int currentRoom;
 
     public Enemy(String name, int startRoom) {
-        this.name = "Gonzalin";
-        this.currentRoom = startRoom; // El enemigo comienza en una habitación específica
+        this.name = name;
+        this.currentRoom = startRoom;
     }
 
     public String getName() {
@@ -21,29 +21,37 @@ public class Enemy {
         return currentRoom;
     }
 
-    // Método para mover al enemigo a una habitación adyacente aleatoriamente
-    public void moveRandomly(Map map) {
-        Room room = map.getRoom(currentRoom); // Obtener la habitación actual del enemigo
+    // Método para mover al enemigo basado en la dirección
+    public void moveEnemy(int direction, Map map) {
+        Room room = map.getRoom(currentRoom);
+        int nextRoomIndex = room.getExit(direction); // Obtener la salida según la dirección
 
-        // Obtener todas las habitaciones adyacentes válidas (que no sean -1)
+        if (nextRoomIndex != -1) {
+            currentRoom = nextRoomIndex; // Actualizar la habitación actual del enemigo
+            System.out.println(name + " se ha movido a: " + map.getRoom(currentRoom).getName());
+        } else {
+            System.out.println(name + " no puede moverse en esa dirección.");
+        }
+    }
+
+    // Método de movimiento aleatorio (si es necesario mantenerlo)
+    public void moveRandomly(Map map) {
+        Room room = map.getRoom(currentRoom);
         List<Integer> validExits = new ArrayList<>();
         int[] exits = room.getExits();
 
-        // Verificar cada dirección: [arriba, abajo, izquierda, derecha]
-        for (int i = 0; i < exits.length; i++) {
-            if (exits[i] != -1) {
-                validExits.add(exits[i]);
+        for (int exit : exits) {
+            if (exit != -1) {
+                validExits.add(exit);
             }
         }
 
-        // Si hay habitaciones adyacentes válidas
         if (!validExits.isEmpty()) {
             Random random = new Random();
-            int nextRoom = validExits.get(random.nextInt(validExits.size())); // Elegir una sala adyacente aleatoria
-            currentRoom = nextRoom; // Actualizar la posición del enemigo
+            currentRoom = validExits.get(random.nextInt(validExits.size()));
             System.out.println(name + " se ha movido a: " + map.getRoom(currentRoom).getName());
         } else {
-            System.out.println(name + " no puede moverse porque no hay habitaciones adyacentes válidas.");
+            System.out.println(name + " no puede moverse.");
         }
     }
 }
