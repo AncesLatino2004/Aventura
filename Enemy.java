@@ -7,7 +7,9 @@ import java.util.Random;
 public class Enemy {
     private String name;
     private int currentRoom;
-
+     private Map m = new Map();
+    private Player player = new Player("Hero", m.getRoom(8));
+    
     public Enemy(String name, int startRoom) {
         this.name = name;
         this.currentRoom = startRoom;
@@ -53,5 +55,31 @@ public class Enemy {
         } else {
             System.out.println(name + " no puede moverse.");
         }
+    }
+
+    public void atacar() {
+    	System.out.println();
+    	if(player.hasDonut() == true) {
+    		System.out.println("Gonzalin se ha distraido con los Donuts que llevas encima y no se va a mover mas.");
+    	}
+    	else {
+    		System.out.println("Gonzalin se te hecha encima y te mata");
+    		GameOver();
+    	}
+    	
+    }
+    public void GameOver() {
+    	System.out.println("███▀▀▀██┼███▀▀▀███┼███▀█▄█▀███┼██▀▀▀\n" +
+                "██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼█┼┼┼██┼██┼┼┼\n" +
+                "██┼┼┼▄▄▄┼██▄▄▄▄▄██┼██┼┼┼▀┼┼┼██┼██▀▀▀\n" +
+                "██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██┼┼┼\n" +
+                "███▄▄▄██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██▄▄▄\n" +
+                "┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\n" +
+                "███▀▀▀███┼▀███┼┼██▀┼██▀▀▀┼██▀▀▀▀██▄┼\n" +
+                "██┼┼┼┼┼██┼┼┼██┼┼██┼┼██┼┼┼┼██┼┼┼┼┼██┼\n" +
+                "██┼┼┼┼┼██┼┼┼██┼┼██┼┼██▀▀▀┼██▄▄▄▄▄▀▀┼\n" +
+                "██┼┼┼┼┼██┼┼┼██┼┼█▀┼┼██┼┼┼┼██┼┼┼┼┼██┼\n" +
+                "███▄▄▄███┼┼┼─▀█▀┼┼─┼██▄▄▄┼██┼┼┼┼┼██▄");
+   
     }
 }
