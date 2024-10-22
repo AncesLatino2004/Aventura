@@ -1,46 +1,62 @@
 package JocNau;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class iHall extends NPC {
-    private Map<String, String> itemLocations; // Mapa que contiene los objetos y sus ubicaciones
-
-    public iHall(String name, String dialogue) {
-        super(name, dialogue);
-        // Inicializar el mapa con las ubicaciones correctas de los objetos
-        itemLocations = new HashMap<>();
-        itemLocations.put("Tarjeta", "Oficines");
-        itemLocations.put("Traje", "Vestuari");
-        itemLocations.put("Linterna", "Cocina");
-        itemLocations.put("Herramienta", "Tallers");
-        itemLocations.put("Donut", "Menjador");
+    public iHall() {
+        super("iHall", "Hola, puedo decirte dónde están los objetos si lo necesitas.");
     }
 
-    // Método para interactuar con el jugador y preguntar qué objeto necesita
-    public void askForObject(String itemName) {
-        System.out.println(getName() + " pregunta: ¿Qué objeto necesitas?");
-        giveLocation(itemName); // Proporcionar la ubicación del objeto
+    // Método para interactuar con el jugador y preguntar qué objeto está buscando
+    public void askForObject(Player player, Map map) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Pedir al jugador el nombre del objeto que está buscando
+        System.out.println(getName() + " dice: ¿Qué objeto estás buscando?");
+        String itemName = scanner.nextLine();
+
+        // Buscar el objeto en todas las habitaciones del mapa
+        Room foundRoom = findItemInRooms(itemName, map);
+
+        // Si se encuentra el objeto, se da la localización (50% de equivocarse)
+        if (foundRoom != null) {
+            giveLocation(itemName, foundRoom);
+        } else {
+            // Si no se encuentra el objeto, notificar que no se sabe dónde está
+            System.out.println(getName() + " dice: No sé dónde está ese objeto.");
+        }
+    }
+
+    // Método para buscar un objeto en todas las habitaciones del mapa
+    private Room findItemInRooms(String itemName, Map map) {
+        ArrayList<Room> rooms = map.getAllRooms(); // Obtener todas las habitaciones del mapa
+
+        // Buscar en todas las habitaciones
+        for (Room room : rooms) {
+            for (Item item : room.getItems()) {
+                if (item.getName().equalsIgnoreCase(itemName)) {
+                    return room; // Retorna la habitación donde se encuentra el objeto
+                }
+            }
+        }
+
+        return null; // No se encontró el objeto
     }
 
     // Método para proporcionar la ubicación del objeto (50% de equivocarse)
-    public void giveLocation(String itemName) {
+    public void giveLocation(String itemName, Room correctRoom) {
         Random random = new Random();
         boolean correct = random.nextBoolean(); // Genera true o false (50% de probabilidad)
 
-        if (itemLocations.containsKey(itemName)) {
-            if (correct) {
-                // Dar la ubicación correcta
-                System.out.println(getName() + " dice: El " + itemName + " está en la sala " + itemLocations.get(itemName) + ".");
-            } else {
-                // Dar una ubicación incorrecta (elegir otra ubicación aleatoria)
-                Object[] rooms = itemLocations.values().toArray(); // Array con las ubicaciones
-                String wrongRoom = (String) rooms[random.nextInt(rooms.length)];
-                System.out.println(getName() + " dice: El " + itemName + " está en la sala " + wrongRoom + ". (¿Seguro?)");
-            }
+        if (correct) {
+            // Dar la ubicación correcta
+            System.out.println(getName() + " dice: El " + itemName + " está en la sala " + correctRoom.getName() + ".");
         } else {
-            System.out.println(getName() + " dice: No sé dónde está ese objeto.");
+            // Dar una ubicación incorrecta (elegir otra ubicación aleatoria)
+            System.out.println(getName() + " dice: El " + itemName + " está en una sala diferente... creo.");
         }
     }
 }
