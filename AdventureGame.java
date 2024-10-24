@@ -1,6 +1,7 @@
 package JocNau;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class AdventureGame {
@@ -9,6 +10,7 @@ public class AdventureGame {
     private Enemy enemy;
     private Scanner scanner;
     private iHall hall;
+    private Tripulant tripulant;
 
     public static void main(String[] args) {
         AdventureGame game = new AdventureGame();
@@ -23,7 +25,7 @@ public class AdventureGame {
         player = new Player("Hero", m.getRoom(8));
         enemy = new Enemy("Gonzalin", 6);
         hall = new iHall();
-        
+        tripulant = new Tripulant();
         // Inicializar el escáner para entrada del usuario
         scanner = new Scanner(System.in);
     }
@@ -38,7 +40,7 @@ public class AdventureGame {
         while (true) {
             System.out.println("\nEstás en: " + player.getCurrentRoom().getName());
             System.out.println(player.getCurrentRoom().getDescription());
-            System.out.println("Que quieres hacer: IR, AGARRAR, DEJAR, USAR, ENCENDER, IHALL, SALIR");
+            System.out.println("Que quieres hacer: IR, AGARRAR, DEJAR, USAR, INVENTARI, IHALL, DESPERTAR, SALIR");
 
             String input = scanner.nextLine().toUpperCase();
             switch (input) {
@@ -47,7 +49,9 @@ public class AdventureGame {
                 int direction = scanner.nextInt();
                 scanner.nextLine(); // Consumir el salto de línea después de ingresar el número
                 player.movePlayer(direction, m); // Mueve al jugador usando un entero como dirección
-                enemy.moveEnemy(direction, m);
+                Random random = new Random();
+                int directionE = random.nextInt(4) + 1;
+                enemy.moveEnemy(directionE, m);
 
                 // Comprobar si el jugador ha llegado a la sala de propulsores
                 if (player.getCurrentRoom().getName().equalsIgnoreCase("Propulsores")) {
@@ -61,7 +65,7 @@ public class AdventureGame {
                 // Comprobar si el jugador y el enemigo están en la misma habitación
                 if (player.getCurrentRoom().getRoomNumber() == enemy.getCurrentRoom()) {
                     System.out.println("¡Te has encontrado con Gonzalin!");
-
+                    
                     // Verificar si el jugador tiene un donut
                     if (player.getInventory().stream().anyMatch(item -> item.getName().equalsIgnoreCase("Donut"))) {
                         // Eliminar el donut del inventario y calmar al enemigo
@@ -215,22 +219,46 @@ public class AdventureGame {
                 }
                 break;
 
-            case "ENCENDER":
-                System.out.println("Has intentado ENCENDER algo. Implementar lógica aquí.");
-                break;
-
             case "IHALL":
                 hall.askForObject(player, m); // Pasar el jugador al NPC para que interactúe
                 break;
-
+            
+            case "DESPERTAR":
+            	if(player.getCurrentRoom() != m.getRoom(8)) {
+            		System.out.println("No se puede despertar a alguien en esta habitacion");
+            	}else {
+            		System.out.println("Despertes al tripulant");
+            		tripulant.askForCard();
+            		  System.out.println("Vols agafar la targeta del tripulant?: (1. Sí 2. No");
+                      int resposta = scanner.nextInt();       
+                      switch(resposta) {
+                      	case 1:
+                      		Room currentRoom2 = player.getCurrentRoom();
+                      		Item itemToGrab = currentRoom2.getItems().get(resposta - 1);
+                            player.addItem(itemToGrab);      
+                            break;
+                        case 2:                            	
+                      		System.out.println("Entesos capità, si no li fa falta ara mateix, no passa res");
+                      		break;
+                      }
+            	}
+            	break;
             case "SALIR":
                 restartGame(); // Llamamos al método para reiniciar o terminar el juego
                 break;
+                
+            case "INVENTARI":
+            	  for (int i = 0; i < player.getInventory().size(); i++) {
+                      System.out.println((i + 1) + ". " + player.getInventory().get(i).getName());
+                  }
+            	break;
 
             default:
                 System.out.println("No se ha entendido la palabra introducida, introduce una válida.");
                 break;
             }
+            
+            System.out.println("--------------------------------------------------------------------------");
         }
     }
 
