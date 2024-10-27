@@ -31,29 +31,29 @@ public class Player {
         return currentRoom;
     }
 
-    // Método para mover al jugador
+    // Mètode per moure el jugador
     public void movePlayer(int direction, Map map) {
         int nextRoomIndex = currentRoom.getExit(direction);
         if (nextRoomIndex == -1) {
-            System.out.println("No puedes moverte en esa dirección.");
+            System.out.println("No pots moure't en aquesta direcció.");
         } else {
             Room nextRoom = map.getRoom(nextRoomIndex);
 
-            // Restricción para la sala "Tallers"
+            // Restricció per a la sala "Tallers"
             if (nextRoom.getName().equals("Tallers") && !hasFlashlightOn) {
-                System.out.println("El taller está oscuro. Necesitas encender la linterna para entrar.");
+                System.out.println("El taller està fosc. Necessites encendre la llanterna per entrar.");
                 return;
             }
 
-            // Restricción para la sala "Propulsors"
+            // Restricció per a la sala "Propulsors"
             if (nextRoom.getName().equals("Propulsors") && !hasSuit) {
-                System.out.println("No puedes entrar en la sala de propulsores sin ponerte el traje.");
+                System.out.println("No pots entrar a la sala de propulsors sense posar-te el vestit.");
                 return;
             }
 
-            // Si no hay restricciones, moverse a la nueva habitación
+            // Si no hi ha restriccions, moure's a la nova habitació
             currentRoom = nextRoom;
-            System.out.println("Te has movido a: " + currentRoom.getName());
+            System.out.println("T'has mogut a: " + currentRoom.getName());
             System.out.println(currentRoom.getDescription());
         }
     }
@@ -70,41 +70,39 @@ public class Player {
         if (foundItem != null) {
             foundItem.use(this);
 
-            // Activar linterna
+            // Activar llanterna
             if (foundItem.getEffect().equals("turn_on_flashlight")) {
                 hasFlashlightOn = true;
-                System.out.println("Has encendido la linterna.");
+                System.out.println("Has encès la llanterna.");
             }
 
-            // Ponerse el traje
+            // Posar-se el vestit
             else if (foundItem.getEffect().equals("wear_suit")) {
                 hasSuit = true;
-                System.out.println("Te has puesto el traje espacial.");
+                System.out.println("T'has posat el vestit espacial.");
             }
 
-            // Usar herramienta solo en la sala "Propulsors"
+            // Usar l'eina només a la sala "Propulsors"
             else if (foundItem.getEffect().equals("use_herramienta")) {
                 if (currentRoom.getName().equals("Propulsors")) {
                     hasHerramienta = true;
-                    System.out.println("Has usado la herramienta y arreglado los propulsores. ¡Has ganado el juego!");
-                    // Aquí termina el juego
+                    System.out.println("Has usat l'eina i has arreglat els propulsors. Has guanyat el joc!");
+                    // Aquí acaba el joc
                     System.exit(0);
                 } else {
-                    System.out.println("No puedes usar la herramienta aquí. Debes estar en la sala de propulsores.");
+                    System.out.println("No pots usar l'eina aquí. Has d'estar a la sala de propulsors.");
                 }
             }
 
         } else {
-            System.out.println("No tienes tal objeto en tu inventario.");
+            System.out.println("No tens aquest objecte en el teu inventari.");
         }
     }
 
-
-
-    // Nuevo método para agregar un objeto al inventario
+    // Nou mètode per afegir un objecte a l'inventari
     public void addItem(Item item) {
         inventory.add(item);
-        System.out.println("El objeto " + item.getName() + " ha sido añadido a tu inventario.");
+        System.out.println("L'objecte " + item.getName() + " ha estat afegit al teu inventari.");
     }
 
     public void pickUpItem(String itemName) {
@@ -118,28 +116,24 @@ public class Player {
         if (foundItem != null) {
             inventory.add(foundItem);
             currentRoom.removeItem(foundItem);
-            System.out.println("Has recogido: " + foundItem.getName());
+            System.out.println("Has recollit: " + foundItem.getName());
         } else {
-            System.out.println("No hay tal objeto aquí.");
+            System.out.println("No hi ha tal objecte aquí.");
         }
     }
 
-    
-
     public void showInventory() {
         if (inventory.size() > 0) {
-            System.out.println("Tu inventario contiene:");
+            System.out.println("El teu inventari conté:");
             for (Item item : inventory) {
                 System.out.println("- " + item.getName());
             }
         } else {
-            System.out.println("Tu inventario está vacío.");
+            System.out.println("El teu inventari està buit.");
         }
     }
 
- 
-
-    // Métodos para verificar si el jugador tiene ciertos objetos
+    // Mètodes per verificar si el jugador té certs objectes
     public boolean hasSuit() {
         return hasSuit;
     }
@@ -160,7 +154,7 @@ public class Player {
         return hasDonut;
     }
 
-    // Métodos para establecer los estados de los objetos
+    // Mètodes per establir els estats dels objectes
     public void setSuit(boolean hasSuit) {
         this.hasSuit = hasSuit;
     }
@@ -181,12 +175,13 @@ public class Player {
         this.hasDonut = hasDonut;
     }
 
-    // Este es el nuevo método que agregué
+    // Aquest és el nou mètode que he afegit
     public ArrayList<Item> getInventory() {
         return inventory;
     }
+    
     public void removeItem(Item item) {
         inventory.remove(item);
-        System.out.println("El objeto " + item.getName() + " ha sido eliminado de tu inventario.");
+        System.out.println("L'objecte " + item.getName() + " ha estat eliminat del teu inventari.");
     }
 }
