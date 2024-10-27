@@ -22,28 +22,27 @@ public class Item {
     public String getEffect() {
         return effect;
     }
-
+    
     public void use(Player player) {
-        System.out.println("Has usado: " + name + ". " + description);
-        // Aquí puedes implementar los efectos específicos según el objeto
+        System.out.println("Has usat: " + name + ". " + description);
         switch (effect.toLowerCase()) {
             case "open_lockers":
-                System.out.println("Usaste la tarjeta para abrir las taquillas.");
+                System.out.println("Has utilitzat la targeta per obrir les taquilles.");
                 break;
             case "wear_suit":
-                System.out.println("Te has puesto el traje. Ahora puedes salir al exterior.");
+                System.out.println("T'has posat el vestit. Ara pots sortir a l'exterior.");
                 break;
             case "turn_on_flashlight":
-                System.out.println("Has encendido la linterna. Ahora puedes ver en la sala oscura.");
+                System.out.println("Has encès la llanterna. Ara pots veure a la sala fosca.");
                 break;
             case "fix_propulsors":
-                System.out.println("Has usado la herramienta para arreglar los propulsores.");
+                System.out.println("Has utilitzat l'eina per arreglar els propulsors.");
                 break;
             case "use_donut":
-                System.out.println("Usaste el donut para paralizar al enemigo.");
+                System.out.println("Has utilitzat el donut per paralitzar l'enemic.");
                 break;
             default:
-                System.out.println("El objeto no tiene un uso específico.");
+                System.out.println("L'objecte no té un ús específic.");
         }
     }
 }
